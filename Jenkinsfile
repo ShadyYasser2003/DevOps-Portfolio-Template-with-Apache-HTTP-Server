@@ -17,13 +17,11 @@ pipeline {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
 
-                            withSonarQubeEnv('SonarQube') {
-                                sh '''
-                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner
-                                        -Dsonar.projectKey="profile"
-                                        -Dsonar.sources="Portfolio-Template/index.html"
-                                '''
-                            }
+                            sonar-scanner \
+                                -Dsonar.projectKey=profile \
+                                -Dsonar.sources=. \
+                                -Dsonar.host.url=http://127.0.0.1:9000 \
+                                -Dsonar.login=sqp_b8484a577df654fa49a6f9d1a025612eb91fba25
                         }
                     }
         }
