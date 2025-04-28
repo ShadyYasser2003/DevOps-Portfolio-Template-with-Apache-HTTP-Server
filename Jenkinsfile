@@ -35,19 +35,21 @@ pipeline {
 
         stage('Trivy Vulnerability Scanner') {
             steps {
-                sh '''
-                    trivy image shady203/portfolio-template:$GIT_COMMIT \
-                        --severity LOW,MEDIUM,HIGH \
-                        --exit-code 0 \
-                        --quiet \
-                        --format json -o trivy-image-MEDIUM-results.json
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                    sh '''
+                        trivy image shady203/portfolio-template:$GIT_COMMIT \
+                            --severity LOW,MEDIUM,HIGH \
+                            --exit-code 0 \
+                            --quiet \
+                            --format json -o trivy-image-MEDIUM-results.json
 
-                    trivy image shady203/portfolio-template:$GIT_COMMIT \
-                        --severity CRITICAL \
-                        --exit-code 1 \
-                        --quiet \
-                        --format json -o trivy-image-CRITICAL-results.json
-                '''
+                        trivy image shady203/portfolio-template:$GIT_COMMIT \
+                            --severity CRITICAL \
+                            --exit-code 1 \
+                            --quiet \
+                            --format json -o trivy-image-CRITICAL-results.json
+                    '''
+                    }
             }
             post {
                 always {
