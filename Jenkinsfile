@@ -102,10 +102,8 @@ pipeline {
                     sh '''
                         echo "Getting Minikube IP..."
                         MINIKUBE_IP=$(minikube ip)
-
                         echo "Testing access to the application..."
                         curl --fail $(minikube service portfolio-service --url) || (echo "❌ Failed to reach the application!" && exit 1)
-
                         echo "✅ Application is reachable!"
                     '''
                 }
