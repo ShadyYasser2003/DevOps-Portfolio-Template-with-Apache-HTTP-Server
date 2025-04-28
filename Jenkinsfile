@@ -9,18 +9,18 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') { // مرحلة تحليل الكود باستخدام SonarQube
+        stage('SonarQube Analysis') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') { // تحديد مهلة زمنية للمرحلة بـ 5 دقائق
+                timeout(time: 5, unit: 'MINUTES') { 
 
-                            withSonarQubeEnv('SonarQube') { // ضبط بيئة SonarQube
+                            withSonarQubeEnv('SonarQube') {
                                 sh '''
                                     ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                                        -Dsonar.projectKey=sonar \ // تحديد مفتاح المشروع في SonarQube
-                                        -Dsonar.sources=. \ // تحديد دليل المصدر الذي سيتم تحليله
-                                        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \ // تحديد مسار تقرير تغطية الكود بتنسيق LCOV
-                                        -Dsonar.junit.reportPaths=coverage/mocha-results.xml \ // تحديد مسار تقرير نتائج اختبارات JUnit
-                                        -Dsonar.coverage.cobertura.reportPath=coverage/cobertura-coverage.xml // تحديد مسار تقرير تغطية الكود بتنسيق Cobertura
+                                        -Dsonar.projectKey=sonar \ 
+                                        -Dsonar.sources=. \ 
+                                        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \ 
+                                        -Dsonar.junit.reportPaths=coverage/mocha-results.xml \
+                                        -Dsonar.coverage.cobertura.reportPath=coverage/cobertura-coverage.xml 
                                 '''
                             }
                         }
