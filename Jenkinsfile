@@ -16,20 +16,16 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    withSonarQubeEnv('SonarQube') {
-                        sonarScanner(
-                            toolName: 'SonarScanner',
-                            projectKey: 'profile', // تم التعديل هنا: تحديد projectKey كخاصية للـ sonarScanner
-                            sources: '.',
-                            options: [
-                                '-Dsonar.javascript.lcov.reportPaths=coverage/lcov.info',
-                                '-Dsonar.junit.reportPaths=coverage/mocha-results.xml',
-                                '-Dsonar.coverage.cobertura.reportPath=coverage/cobertura-coverage.xml'
-                            ]
-                        )
+
+                            withSonarQubeEnv('SonarQube') {
+                                sh '''
+                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner
+                                        -Dsonar.projectKey="profile"
+                                        -Dsonar.sources="Portfolio-Template/index.html"
+                                '''
+                            }
+                        }
                     }
-                }
-            }
         }
         stage('Build Image') {
             steps {
