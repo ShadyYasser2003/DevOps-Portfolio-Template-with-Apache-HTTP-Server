@@ -1,18 +1,18 @@
-xpipeline {
-    agent any  
-    
+pipeline {
+    agent any
+
     stages {
-        stage('Checkout SCM') { 
+        stage('Checkout SCM') {
             steps {
-                git branch: 'main', 
+                git branch: 'main',
                     url: 'https://github.com/ShadyYasser2003/DevOps-Portfolio-Template-with-Apache-HTTP-Server.git'
             }
-        }   
+        }
 
         stage('SonarQube Analysis') { // مرحلة تحليل الكود باستخدام SonarQube
-            steps { 
+            steps {
                 timeout(time: 5, unit: 'MINUTES') { // تحديد مهلة زمنية للمرحلة بـ 5 دقائق
-                       
+
                             withSonarQubeEnv('SonarQube') { // ضبط بيئة SonarQube
                                 sh '''
                                     ${SONAR_SCANNER_HOME}/bin/sonar-scanner \ // تشغيل أداة SonarScanner
@@ -36,22 +36,22 @@ xpipeline {
         stage('Trivy Vulnerability Scanner') {
             steps {
                 sh '''
-                    trivy image shady203/mealify:$GIT_COMMIT \
+                    trivy image shady203/portfolio-template:$GIT_COMMIT \
                         --severity LOW,MEDIUM,HIGH \
                         --exit-code 0 \
                         --quiet \
                         --format json -o trivy-image-MEDIUM-results.json
 
-                    trivy image shady203/mealify:$GIT_COMMIT \
+                    trivy image shady203/portfolio-template:$GIT_COMMIT \
                         --severity CRITICAL \
                         --exit-code 1 \
                         --quiet \
                         --format json -o trivy-image-CRITICAL-results.json
                 '''
             }
-            post { 
-                always { 
-                    sh ''' 
+            post {
+                always {
+                    sh '''
                         trivy convert \
                             --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
                             --output trivy-image-MEDIUM-results.html trivy-image-MEDIUM-results.json
@@ -93,7 +93,7 @@ xpipeline {
                 }
             }
         }
- 
+
         stage('Test NodePort Access') {
             steps {
                 script {
@@ -104,7 +104,7 @@ xpipeline {
                         echo "Testing access to the application..."
                         curl --fail http://$MINIKUBE_IP:30010 || (echo "❌ Failed to reach the application!" && exit 1)
 
-                        echo "✅ Application is reachable!" 
+                        echo "✅ Application is reachable!"
                     '''
                 }
             }
