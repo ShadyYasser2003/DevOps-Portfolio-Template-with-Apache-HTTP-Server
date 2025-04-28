@@ -11,16 +11,16 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') { 
+                timeout(time: 5, unit: 'MINUTES') {
 
                             withSonarQubeEnv('SonarQube') {
                                 sh '''
-                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                                        -Dsonar.projectKey=sonar \ 
-                                        -Dsonar.sources=. \ 
-                                        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \ 
-                                        -Dsonar.junit.reportPaths=coverage/mocha-results.xml \
-                                        -Dsonar.coverage.cobertura.reportPath=coverage/cobertura-coverage.xml 
+                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner
+                                        -Dsonar.projectKey=sonar
+                                        -Dsonar.sources=.
+                                        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+                                        -Dsonar.junit.reportPaths=coverage/mocha-results.xml
+                                        -Dsonar.coverage.cobertura.reportPath=coverage/cobertura-coverage.xml
                                 '''
                             }
                         }
