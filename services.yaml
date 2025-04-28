@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio-service
+  labels:
+    app: shady
+spec:
+  selector:
+    app: shady
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      NodePort: 30010
+  type: NodePort
