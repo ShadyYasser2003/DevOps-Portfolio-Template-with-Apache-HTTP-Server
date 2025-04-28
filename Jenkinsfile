@@ -86,7 +86,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        export KUBECONFIG=$HOME/.kube/config
+                        export KUBECONFIG=/home/shady_yasser/.kube/config
                         minikube update-context
                         sed -i "s|IMAGE_TAG|$GIT_COMMIT|g" deployment.yaml
                         kubectl apply -f deployment.yaml --validate=false
