@@ -110,7 +110,7 @@ pipeline {
             }
         }
 
-        post{
+        post {
             always {
                 junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-MEDIUM-results.xml"
                 junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-CRITICAL-results.xml"
