@@ -111,21 +111,20 @@ pipeline {
         }
 
         post{
-            always{
-               sh '''
-               junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-MEDIUM-results.xml"
-               junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-CRITICAL-results.xml"
+            always {
+                junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-MEDIUM-results.xml"
+                junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-CRITICAL-results.xml"
 
                 publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.',
-                reportFiles: 'trivy-image-MEDIUM-results.html', reportName: 'trivy-MEDIUM', reportTitles: '',
-                useWrapperFileDirectly: true)
+                    reportFiles: 'trivy-image-MEDIUM-results.html', reportName: 'trivy-MEDIUM', reportTitles: '',
+                    useWrapperFileDirectly: true)
 
                 publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.',
-                reportFiles: 'trivy-image-CRITICAL-results.html', reportName: 'trivy-CRITICAL', reportTitles: '',
-                useWrapperFileDirectly: true)
-               '''
+                    reportFiles: 'trivy-image-CRITICAL-results.html', reportName: 'trivy-CRITICAL', reportTitles: '',
+                    useWrapperFileDirectly: true)
+                }
             }
-        }
+
 
 
     }
