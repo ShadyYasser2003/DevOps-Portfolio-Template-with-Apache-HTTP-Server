@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-            SONAR_SCANNER_HOME = tool 'SonarScanner' 
-        }
+        SONAR_SCANNER_HOME = tool 'SonarScanner'
+    }
 
     stages {
         stage('Checkout SCM') {
@@ -16,20 +16,20 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-
-                            withSonarQubeEnv('SonarQube') {
-                                sh '''
-                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                                    -Dsonar.projectKey=profile \
-                                    -Dsonar.sources=. \
-                                '''
-                            }
-                        }
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                            ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                                -Dsonar.projectKey=profile \
+                                -Dsonar.sources=.
+                        '''
                     }
+                }
+            }
         }
+
         stage('Build Image') {
             steps {
-                sh 'docker build -t shady203/portfolio-template:$GIT_COMMIT ./Portfolio-Template '
+                sh 'docker build -t shady203/portfolio-template:$GIT_COMMIT ./Portfolio-Template'
             }
         }
 
@@ -49,7 +49,7 @@ pipeline {
                             --quiet \
                             --format json -o trivy-image-CRITICAL-results.json
                     '''
-                    }
+                }
             }
             post {
                 always {
@@ -109,23 +109,34 @@ pipeline {
                 }
             }
         }
+    }
 
-        post {
-            always {
-                junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-MEDIUM-results.xml"
-                junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-CRITICAL-results.xml"
+    post {
+        always {
+            junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-MEDIUM-results.xml"
+            junit allowEmptyResults: true, stdioRetention: -1, testResults: "trivy-image-CRITICAL-results.xml"
 
-                publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.',
-                    reportFiles: 'trivy-image-MEDIUM-results.html', reportName: 'trivy-MEDIUM', reportTitles: '',
-                    useWrapperFileDirectly: true)
+            publishHTML(
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: '.',
+                reportFiles: 'trivy-image-MEDIUM-results.html',
+                reportName: 'trivy-MEDIUM',
+                reportTitles: '',
+                useWrapperFileDirectly: true
+            )
 
-                publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.',
-                    reportFiles: 'trivy-image-CRITICAL-results.html', reportName: 'trivy-CRITICAL', reportTitles: '',
-                    useWrapperFileDirectly: true)
-                }
-            }
-
-
-
+            publishHTML(
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: '.',
+                reportFiles: 'trivy-image-CRITICAL-results.html',
+                reportName: 'trivy-CRITICAL',
+                reportTitles: '',
+                useWrapperFileDirectly: true
+            )
+        }
     }
 }
