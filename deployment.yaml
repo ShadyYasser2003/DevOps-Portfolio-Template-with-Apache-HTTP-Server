@@ -15,7 +15,6 @@ spec:
       containers:
       - name: portfolio
         image: shady203/portfolio-template:IMAGE_TAG
-        imagePullPolicy: Never 
         ports:
         - containerPort: 80
 
