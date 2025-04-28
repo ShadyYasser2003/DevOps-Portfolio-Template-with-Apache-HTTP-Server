@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Portfolio-Template Project</title>
-</head>
-<body>
-
 <h1>📦 Portfolio-Template</h1>
 
 <p>
@@ -57,6 +49,3 @@ This project showcases a complete CI/CD pipeline for deploying a portfolio web a
     <li>Detailed security reports generated and published automatically.</li>
     <li>GitOps-driven deployment with ArgoCD for automated syncing and rollback.</li>
 </ul>
-
-</body>
-</html>
