@@ -20,7 +20,7 @@ pipeline {
                             withSonarQubeEnv('SonarQube') {
                                 sh '''
                                     ${SONAR_SCANNER_HOME}/bin/sonar-scanner
-                                        -Dsonar.projectKey=sonar
+                                        -Dsonar.projectKey=profile
                                         -Dsonar.sources=.
                                         -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
                                         -Dsonar.junit.reportPaths=coverage/mocha-results.xml
