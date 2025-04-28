@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: portfolio-deployment
 spec:
-  replicas: 2  
+  replicas: 3
   selector:
     matchLabels:
       app: shady
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: portfolio
-        image: portfolio-template
+        image: shady203/portfolio-template:IMAGE_TAG
         imagePullPolicy: Never 
         ports:
         - containerPort: 80

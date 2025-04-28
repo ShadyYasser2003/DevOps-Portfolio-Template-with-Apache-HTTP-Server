@@ -5,13 +5,31 @@ xpipeline {
         stage('Checkout SCM') { 
             steps {
                 git branch: 'main', 
-                    url: 'https://github.com/ShadyYasser2003/nginx-mealify.git'
+                    url: 'https://github.com/ShadyYasser2003/DevOps-Portfolio-Template-with-Apache-HTTP-Server.git'
             }
         }   
 
+        stage('SonarQube Analysis') { // مرحلة تحليل الكود باستخدام SonarQube
+            steps { 
+                timeout(time: 5, unit: 'MINUTES') { // تحديد مهلة زمنية للمرحلة بـ 5 دقائق
+                       
+                            withSonarQubeEnv('SonarQube') { // ضبط بيئة SonarQube
+                                sh '''
+                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner \ // تشغيل أداة SonarScanner
+                                        -Dsonar.projectKey=sonar \ // تحديد مفتاح المشروع في SonarQube
+                                        -Dsonar.sources=. \ // تحديد دليل المصدر الذي سيتم تحليله
+                                        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \ // تحديد مسار تقرير تغطية الكود بتنسيق LCOV
+                                        -Dsonar.junit.reportPaths=coverage/mocha-results.xml \ // تحديد مسار تقرير نتائج اختبارات JUnit
+                                        -Dsonar.coverage.cobertura.reportPath=coverage/cobertura-coverage.xml // تحديد مسار تقرير تغطية الكود بتنسيق Cobertura
+                                '''
+                            }
+                        }
+                    }
+        }
+
         stage('Build Image') {
             steps {
-                sh 'docker build -t shady203/mealify:$GIT_COMMIT ./my-nginx-project '
+                sh 'docker build -t shady203/portfolio-template:$GIT_COMMIT ./Portfolio-Template '
             }
         }
 
@@ -57,7 +75,7 @@ xpipeline {
         stage('Push Image') {
             steps {
                 withDockerRegistry(credentialsId: 'DockerHub-credentials', url: '') {
-                    sh 'docker push shady203/mealify:$GIT_COMMIT'
+                    sh 'docker push shady203/portfolio-template:$GIT_COMMIT'
                 }
             }
         }
@@ -70,6 +88,7 @@ xpipeline {
                         minikube update-context
                         sed -i "s|IMAGE_TAG|$GIT_COMMIT|g" deployment.yaml
                         kubectl apply -f deployment.yaml --validate=false
+                        kubectl apply -f services.yaml --validate=false
                     '''
                 }
             }
@@ -83,9 +102,9 @@ xpipeline {
                         MINIKUBE_IP=$(minikube ip)
 
                         echo "Testing access to the application..."
-                        curl --fail http://$MINIKUBE_IP:30012 || (echo "❌ Failed to reach the application!" && exit 1)
+                        curl --fail http://$MINIKUBE_IP:30010 || (echo "❌ Failed to reach the application!" && exit 1)
 
-                        echo "✅ Application is reachable!"
+                        echo "✅ Application is reachable!" 
                     '''
                 }
             }
