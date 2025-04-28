@@ -15,7 +15,7 @@ pipeline {
 
                             withSonarQubeEnv('SonarQube') { // ضبط بيئة SonarQube
                                 sh '''
-                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner \ // تشغيل أداة SonarScanner
+                                    ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                                         -Dsonar.projectKey=sonar \ // تحديد مفتاح المشروع في SonarQube
                                         -Dsonar.sources=. \ // تحديد دليل المصدر الذي سيتم تحليله
                                         -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \ // تحديد مسار تقرير تغطية الكود بتنسيق LCOV
@@ -26,7 +26,6 @@ pipeline {
                         }
                     }
         }
-
         stage('Build Image') {
             steps {
                 sh 'docker build -t shady203/portfolio-template:$GIT_COMMIT ./Portfolio-Template '
