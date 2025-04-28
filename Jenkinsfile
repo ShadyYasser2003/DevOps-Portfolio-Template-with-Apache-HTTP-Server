@@ -104,7 +104,7 @@ pipeline {
                         MINIKUBE_IP=$(minikube ip)
 
                         echo "Testing access to the application..."
-                        curl --fail http://$MINIKUBE_IP:30010 || (echo "❌ Failed to reach the application!" && exit 1)
+                        curl --fail http://$MINIKUBE_IP:30055 || (echo "❌ Failed to reach the application!" && exit 1)
 
                         echo "✅ Application is reachable!"
                     '''
