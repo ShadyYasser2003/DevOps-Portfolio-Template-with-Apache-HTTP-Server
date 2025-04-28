@@ -12,6 +12,7 @@ This project showcases a complete CI/CD pipeline for deploying a portfolio web a
     <li><strong>ArgoCD</strong> — Manages continuous deployment with GitOps methodology.</li>
     <li><strong>SonarQube</strong> — Analyzes code quality and reports issues and vulnerabilities.</li>
     <li><strong>Trivy</strong> — Scans Docker images for vulnerabilities and generates security reports.</li>
+    <li><strong>Apache HTTP Server</strong> — Hosts and serves the portfolio web application inside the container.</li>
 </ul>
 
 <h2>🛠️ Pipeline Workflow</h2>
