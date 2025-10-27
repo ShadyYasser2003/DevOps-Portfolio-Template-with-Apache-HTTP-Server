@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: test-alert-rule
+  namespace: monitoring
+  labels:
+    prometheus: prometheus-stack-kube-prom
+    role: alert-rules
+spec:
+  groups:
+  - name: test-alerts
+    rules:
+    - alert: PrometheusRunning
+      expr: up{job="prometheus-stack-kube-prom-prometheus"} == 1
+      for: 1m
+      annotations:
+        summary: Prometheus is running.

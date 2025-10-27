@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: portfolio
-        image: shady203/portfolio-template:IMAGE_TAG
+        image: shady203/portfolio-template
         ports:
         - containerPort: 80
 
